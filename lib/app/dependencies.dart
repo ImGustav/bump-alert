@@ -6,9 +6,6 @@ import '../features/reports/data/report_local_datasource.dart';
 import '../features/reports/data/report_repository_impl.dart';
 import '../features/reports/domain/report_repository.dart';
 
-/// Injeção de dependência simples (composition root).
-/// Tudo é criado uma vez aqui e os ViewModels recebem o que precisam.
-/// Em apps maiores, isso costuma ser feito com get_it ou Riverpod.
 class Dependencies {
   Dependencies._(this.reportRepository);
 
@@ -26,5 +23,4 @@ class Dependencies {
   }
 }
 
-/// Atalho: `deps.reportRepository`, `deps.location`...
 Dependencies get deps => Dependencies.instance;

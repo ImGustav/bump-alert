@@ -6,7 +6,6 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../../core/services/notification_service.dart';
 
-/// Recurso 4 isolado: leitura contínua do acelerômetro.
 class SensorViewModel extends ViewModel {
   SensorViewModel(this._notifications) {
     _sub = accelerometerEventStream(samplingPeriod: SensorInterval.uiInterval)

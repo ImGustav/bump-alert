@@ -17,9 +17,7 @@ class _OlhoNaRuaAppState extends State<OlhoNaRuaApp> {
   void initState() {
     super.initState();
     final notifications = deps.notifications;
-    // App aberto/em segundo plano: toque na notificação cai aqui.
     notifications.onTap = openReportFromPayload;
-    // App estava fechado e foi aberto pela notificação.
     notifications.launchPayload().then((payload) {
       if (payload != null) {
         WidgetsBinding.instance.addPostFrameCallback(

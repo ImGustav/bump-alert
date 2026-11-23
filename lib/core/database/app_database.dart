@@ -3,12 +3,15 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../features/reports/data/report_local_datasource.dart';
 
-/// Abre (e cria, na primeira vez) o banco SQLite do app.
 Future<Database> openAppDatabase() async {
   final dir = await getDatabasesPath();
   return openDatabase(
     join(dir, 'olho_na_rua.db'),
-    version: 1,
+    version: 2,
     onCreate: (db, _) => db.execute(ReportLocalDataSource.createTable),
+    onUpgrade: (db, _, _) async {
+      await db.execute('DROP TABLE IF EXISTS reports');
+      await db.execute(ReportLocalDataSource.createTable);
+    },
   );
 }

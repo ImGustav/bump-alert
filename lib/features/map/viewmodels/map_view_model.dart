@@ -7,7 +7,6 @@ import '../../../core/services/location_service.dart';
 import '../../reports/domain/report.dart';
 import '../../reports/domain/report_repository.dart';
 
-/// Estado do mapa: posição atual + denúncias registradas.
 class MapViewModel extends ViewModel {
   MapViewModel(this._repository, this._location) {
     _sub = _repository.onChanged.listen((_) => loadReports());
@@ -26,7 +25,6 @@ class MapViewModel extends ViewModel {
     notifyListeners();
   }
 
-  /// Retorna uma mensagem de erro, ou null se achou a posição.
   Future<String?> locateMe() async {
     try {
       final pos = await _location.getCurrentPosition();

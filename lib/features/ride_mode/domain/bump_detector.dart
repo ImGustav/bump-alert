@@ -3,20 +3,13 @@ import 'dart:math';
 
 import 'package:sensors_plus/sensors_plus.dart';
 
-/// Recurso 4 — ACELERÔMETRO (+ integração).
-///
-/// Com o celular parado, o módulo do vetor (x, y, z) ≈ 9,81 m/s² (gravidade).
-/// Um solavanco faz esse valor desviar bruscamente. Se o desvio passar do
-/// [threshold] e já tiver passado o [cooldown] desde o último, dispara [onBump].
 class BumpDetector {
   BumpDetector({required this.onBump, this.onSample});
 
   final void Function(double intensity) onBump;
 
-  /// Opcional: recebe cada leitura (para exibir X/Y/Z ao vivo).
   final void Function(AccelerometerEvent event, double deviation)? onSample;
 
-  /// Limiar em m/s² (ajustável pelo slider de sensibilidade).
   double threshold = 8.0;
   Duration cooldown = const Duration(seconds: 3);
 

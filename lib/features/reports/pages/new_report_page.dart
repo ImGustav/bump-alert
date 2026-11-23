@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/dependencies.dart';
-import '../domain/report.dart';
 import '../viewmodels/new_report_view_model.dart';
 
-/// Formulário de denúncia: CÂMERA + GPS na mesma tela.
-///
-/// Quando aberta pela notificação de solavanco, já vem com tipo "Buraco"
-/// e as coordenadas do local do solavanco.
 class NewReportPage extends StatefulWidget {
   const NewReportPage({
     super.key,
-    this.initialType = ReportType.buraco,
     this.initialLatitude,
     this.initialLongitude,
     this.fromBump = false,
   });
 
-  final ReportType initialType;
   final double? initialLatitude;
   final double? initialLongitude;
   final bool fromBump;
@@ -31,7 +24,6 @@ class _NewReportPageState extends State<NewReportPage> {
     repository: deps.reportRepository,
     photoService: deps.photo,
     locationService: deps.location,
-    initialType: widget.initialType,
     latitude: widget.initialLatitude,
     longitude: widget.initialLongitude,
     fromBump: widget.fromBump,
@@ -55,7 +47,7 @@ class _NewReportPageState extends State<NewReportPage> {
     final error = await _vm.save();
     if (!mounted) return;
     if (error != null) return _snack(error);
-    _snack('Denúncia registrada! Obrigado por cuidar da cidade.');
+    _snack('Buraco registrado! Obrigado por cuidar da cidadeoq.');
     Navigator.pop(context);
   }
 
@@ -63,7 +55,7 @@ class _NewReportPageState extends State<NewReportPage> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('Nova denúncia')),
+      appBar: AppBar(title: const Text('Registrar buraco')),
       body: ListenableBuilder(
         listenable: _vm,
         builder: (context, _) => ListView(
@@ -75,10 +67,9 @@ class _NewReportPageState extends State<NewReportPage> {
                 child: const ListTile(
                   leading: Icon(Icons.vibration),
                   title: Text('Solavanco detectado neste local'),
-                  subtitle: Text('Tire uma foto para confirmar o buraco.'),
+                  subtitle: Text('Confirme o registro do buraco.'),
                 ),
               ),
-            // ---------- CÂMERA ----------
             AspectRatio(
               aspectRatio: 4 / 3,
               child: InkWell(
@@ -95,7 +86,7 @@ class _NewReportPageState extends State<NewReportPage> {
                           children: [
                             Icon(Icons.photo_camera, size: 56),
                             SizedBox(height: 8),
-                            Text('Toque para fotografar o problema'),
+                            Text('Adicionar foto (opcional)'),
                           ],
                         )
                       : ClipRRect(
@@ -111,25 +102,8 @@ class _NewReportPageState extends State<NewReportPage> {
                 icon: const Icon(Icons.refresh),
                 label: const Text('Tirar outra foto'),
               ),
+
             const SizedBox(height: 16),
-            // ---------- TIPO ----------
-            DropdownButtonFormField<ReportType>(
-              initialValue: _vm.type,
-              decoration: const InputDecoration(
-                labelText: 'Tipo de problema',
-                border: OutlineInputBorder(),
-              ),
-              items: [
-                for (final t in ReportType.values)
-                  DropdownMenuItem(
-                    value: t,
-                    child: Text('${t.emoji}  ${t.label}'),
-                  ),
-              ],
-              onChanged: (t) => _vm.setType(t!),
-            ),
-            const SizedBox(height: 12),
-            // ---------- GPS ----------
             Card(
               child: ListTile(
                 leading: const Icon(Icons.location_on),
@@ -154,11 +128,12 @@ class _NewReportPageState extends State<NewReportPage> {
                       ),
               ),
             ),
+
             const SizedBox(height: 24),
             FilledButton.icon(
               onPressed: _vm.saving ? null : _save,
               icon: const Icon(Icons.send),
-              label: const Text('Registrar denúncia'),
+              label: const Text('Registrar buraco'),
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(52),
               ),

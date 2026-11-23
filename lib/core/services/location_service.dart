@@ -1,7 +1,5 @@
 import 'package:geolocator/geolocator.dart';
 
-/// Recurso 2 — GPS.
-/// Fluxo: serviço de localização ligado? → permissão concedida? → posição.
 class LocationService {
   Future<Position> getCurrentPosition() async {
     if (!await Geolocator.isLocationServiceEnabled()) {

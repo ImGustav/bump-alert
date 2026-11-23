@@ -4,7 +4,6 @@ import '../../../app/dependencies.dart';
 import '../viewmodels/sensor_view_model.dart';
 import '../widgets/axis_bar.dart';
 
-/// X, Y e Z do acelerômetro em tempo real + teste de notificação.
 class SensorPage extends StatefulWidget {
   const SensorPage({super.key});
 

@@ -5,7 +5,6 @@ import '../../reports/pages/reports_list_page.dart';
 import '../../ride_mode/pages/ride_mode_page.dart';
 import '../../sensor/pages/sensor_page.dart';
 
-/// Navegação principal por abas.
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -19,8 +18,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // IndexedStack mantém o estado das abas (ex.: Modo Trajeto continua
-      // ligado ao trocar para o mapa).
       body: IndexedStack(
         index: _index,
         children: const [
@@ -39,16 +36,19 @@ class _HomePageState extends State<HomePage> {
             selectedIcon: Icon(Icons.map),
             label: 'Mapa',
           ),
+
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined),
             selectedIcon: Icon(Icons.list_alt),
             label: 'Denúncias',
           ),
+
           NavigationDestination(
             icon: Icon(Icons.directions_car_outlined),
             selectedIcon: Icon(Icons.directions_car),
             label: 'Trajeto',
           ),
+
           NavigationDestination(
             icon: Icon(Icons.sensors_outlined),
             selectedIcon: Icon(Icons.sensors),

@@ -9,7 +9,6 @@ import '../../../app/dependencies.dart';
 import '../../../core/widgets/osm_tile_layer.dart';
 import '../domain/report.dart';
 
-/// Foto + coordenadas + mini-mapa na mesma tela (desafio extra).
 class ReportDetailPage extends StatelessWidget {
   const ReportDetailPage({super.key, required this.report});
 
@@ -43,7 +42,7 @@ class ReportDetailPage extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${report.type.emoji} ${report.type.label}'),
+        title: const Text('🕳️ Buraco'),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
@@ -53,15 +52,16 @@ class ReportDetailPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          AspectRatio(
-            aspectRatio: 4 / 3,
-            child: Image.file(
-              File(report.photoPath),
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) =>
-                  const Center(child: Icon(Icons.broken_image, size: 48)),
+          if (report.hasPhoto)
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child: Image.file(
+                File(report.photoPath!),
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    const Center(child: Icon(Icons.broken_image, size: 48)),
+              ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

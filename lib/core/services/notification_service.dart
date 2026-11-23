@@ -1,13 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-/// Recurso 3 — NOTIFICAÇÃO LOCAL.
 class NotificationService {
   NotificationService._();
   static final NotificationService instance = NotificationService._();
 
   final _plugin = FlutterLocalNotificationsPlugin();
 
-  /// Chamado quando o usuário toca na notificação (payload = "lat,lng").
   void Function(String? payload)? onTap;
 
   static const _channel = AndroidNotificationDetails(
@@ -15,6 +13,14 @@ class NotificationService {
     'Solavancos detectados',
     channelDescription:
         'Avisos quando o Modo Trajeto detecta um possível buraco',
+    importance: Importance.max,
+    priority: Priority.high,
+  );
+
+  static const _hazardChannel = AndroidNotificationDetails(
+    'alertas_buraco',
+    'Alertas de buraco',
+    channelDescription: 'Avisa quando você se aproxima de um buraco registrado',
     importance: Importance.max,
     priority: Priority.high,
   );
@@ -30,8 +36,6 @@ class NotificationService {
     );
   }
 
-  /// Se o app foi aberto (estando fechado) tocando numa notificação,
-  /// devolve o payload dela.
   Future<String?> launchPayload() async {
     final details = await _plugin.getNotificationAppLaunchDetails();
     if (details?.didNotificationLaunchApp ?? false) {
@@ -40,7 +44,6 @@ class NotificationService {
     return null;
   }
 
-  /// Android 13+ exige pedir POST_NOTIFICATIONS em tempo de execução.
   Future<bool> requestPermission() async {
     final android = _plugin
         .resolvePlatformSpecificImplementation<
@@ -60,14 +63,15 @@ class NotificationService {
     required String title,
     required String body,
     String? payload,
+    bool hazard = false,
   }) async {
     await _plugin.show(
       id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
       title: title,
       body: body,
-      notificationDetails: const NotificationDetails(
-        android: _channel,
-        iOS: DarwinNotificationDetails(),
+      notificationDetails: NotificationDetails(
+        android: hazard ? _hazardChannel : _channel,
+        iOS: const DarwinNotificationDetails(),
       ),
       payload: payload,
     );

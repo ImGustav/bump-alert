@@ -26,8 +26,8 @@ class ReportRepositoryImpl implements ReportRepository {
   @override
   Future<void> remove(Report report) async {
     await _local.delete(report.id!);
-    final photo = File(report.photoPath);
-    if (await photo.exists()) await photo.delete();
+    final path = report.photoPath;
+    if (path != null && await File(path).exists()) await File(path).delete();
     _changes.add(null);
   }
 }

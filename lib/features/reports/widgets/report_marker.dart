@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../domain/report.dart';
 
-/// Marcador da denúncia no mapa: círculo branco com borda vermelha e o
-/// emoji do tipo. Vermelho = "alerta", para não confundir com o ponto azul
-/// da localização atual.
 class ReportMarker extends StatelessWidget {
   const ReportMarker({super.key, required this.report, this.onTap});
 
@@ -31,7 +28,7 @@ class ReportMarker extends StatelessWidget {
           ],
         ),
         alignment: Alignment.center,
-        child: Text(report.type.emoji, style: const TextStyle(fontSize: 20)),
+        child: const Text('🕳️', style: TextStyle(fontSize: 20)),
       ),
     );
   }

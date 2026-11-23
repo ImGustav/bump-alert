@@ -1,4 +1,3 @@
-/// Um solavanco detectado durante o trajeto.
 class Bump {
   const Bump({
     required this.time,
@@ -11,6 +10,5 @@ class Bump {
   final double latitude;
   final double longitude;
 
-  /// Desvio em relação à gravidade, em m/s².
   final double intensity;
 }

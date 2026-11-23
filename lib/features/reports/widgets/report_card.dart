@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import '../domain/report.dart';
 
-/// Card com foto + coordenadas na mesma tela (desafio extra).
 class ReportCard extends StatelessWidget {
   const ReportCard({super.key, required this.report, this.onTap});
 
@@ -25,16 +24,22 @@ class ReportCard extends StatelessWidget {
         onTap: onTap,
         child: Row(
           children: [
-            Image.file(
-              File(report.photoPath),
+            SizedBox(
               width: 110,
               height: 110,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const SizedBox(
-                width: 110,
-                height: 110,
-                child: Icon(Icons.broken_image),
-              ),
+              child: report.hasPhoto
+                  ? Image.file(
+                      File(report.photoPath!),
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.broken_image),
+                    )
+                  : ColoredBox(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      child: const Icon(Icons.no_photography_outlined),
+                    ),
             ),
             Expanded(
               child: Padding(
@@ -42,10 +47,7 @@ class ReportCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${report.type.emoji} ${report.type.label}',
-                      style: text.titleMedium,
-                    ),
+                    Text('🕳️ Buraco', style: text.titleMedium),
                     const SizedBox(height: 4),
                     Text(
                       '📍 ${report.latitude.toStringAsFixed(6)}, '

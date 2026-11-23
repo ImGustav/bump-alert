@@ -9,7 +9,6 @@ import '../../reports/pages/report_detail_page.dart';
 import '../../reports/widgets/report_marker.dart';
 import '../viewmodels/map_view_model.dart';
 
-/// Desafio extra: mapa com a localização atual + todas as denúncias.
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -65,7 +64,7 @@ class _MapPageState extends State<MapPage> {
       body: FlutterMap(
         mapController: _mapController,
         options: const MapOptions(
-          initialCenter: LatLng(-15.7939, -47.8828), // Brasil até achar o GPS
+          initialCenter: LatLng(-15.7939, -47.8828),
           initialZoom: 4,
         ),
         children: [
@@ -74,8 +73,6 @@ class _MapPageState extends State<MapPage> {
             listenable: _vm,
             builder: (context, _) => MarkerLayer(
               markers: [
-                // Minha posição vem primeiro: assim as denúncias ficam
-                // desenhadas por cima e não somem quando estão no mesmo lugar.
                 if (_vm.myPosition != null)
                   Marker(
                     point: _vm.myPosition!,

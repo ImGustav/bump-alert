@@ -7,20 +7,17 @@ import '../../../core/services/photo_service.dart';
 import '../domain/report.dart';
 import '../domain/report_repository.dart';
 
-/// Estado e ações do formulário de denúncia (CÂMERA + GPS).
 class NewReportViewModel extends ViewModel {
   NewReportViewModel({
     required ReportRepository repository,
     required PhotoService photoService,
     required LocationService locationService,
-    ReportType initialType = ReportType.buraco,
     this.latitude,
     this.longitude,
     this.fromBump = false,
   }) : _repository = repository,
        _photoService = photoService,
-       _locationService = locationService,
-       type = initialType {
+       _locationService = locationService {
     if (latitude == null) getLocation();
   }
 
@@ -29,7 +26,6 @@ class NewReportViewModel extends ViewModel {
   final LocationService _locationService;
   final bool fromBump;
 
-  ReportType type;
   File? photo;
   double? latitude;
   double? longitude;
@@ -39,12 +35,6 @@ class NewReportViewModel extends ViewModel {
 
   bool get hasLocation => latitude != null && longitude != null;
 
-  void setType(ReportType t) {
-    type = t;
-    notifyListeners();
-  }
-
-  /// Retorna uma mensagem de erro, ou null se deu certo.
   Future<String?> takePhoto() async {
     try {
       final file = await _photoService.takePhoto();
@@ -74,16 +64,13 @@ class NewReportViewModel extends ViewModel {
     }
   }
 
-  /// Retorna uma mensagem de erro, ou null se salvou.
   Future<String?> save() async {
-    if (photo == null) return 'Tire uma foto do problema.';
     if (!hasLocation) return 'Aguarde a localização.';
     saving = true;
     notifyListeners();
     await _repository.add(
       Report(
-        type: type,
-        photoPath: photo!.path,
+        photoPath: photo?.path,
         latitude: latitude!,
         longitude: longitude!,
         createdAt: DateTime.now(),

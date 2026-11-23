@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import '../domain/report.dart';
 import 'report_model.dart';
 
-/// Acesso direto à tabela `reports` no SQLite.
 class ReportLocalDataSource {
   ReportLocalDataSource(this._db);
 
@@ -12,9 +11,7 @@ class ReportLocalDataSource {
   static const createTable = '''
     CREATE TABLE reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      type TEXT NOT NULL,
-      description TEXT NOT NULL,
-      photo_path TEXT NOT NULL,
+      photo_path TEXT,
       latitude REAL NOT NULL,
       longitude REAL NOT NULL,
       created_at INTEGER NOT NULL,

@@ -5,8 +5,6 @@ import '../../../app/dependencies.dart';
 import '../../../app/navigation.dart';
 import '../viewmodels/ride_mode_view_model.dart';
 
-/// Modo Trajeto: com o celular no carro/bike, um solavanco forte
-/// indica um possível buraco.
 class RideModePage extends StatefulWidget {
   const RideModePage({super.key});
 
@@ -15,7 +13,11 @@ class RideModePage extends StatefulWidget {
 }
 
 class _RideModePageState extends State<RideModePage> {
-  late final _vm = RideModeViewModel(deps.location, deps.notifications);
+  late final _vm = RideModeViewModel(
+    deps.location,
+    deps.notifications,
+    deps.reportRepository,
+  );
 
   @override
   void dispose() {
@@ -57,6 +59,7 @@ class _RideModePageState extends State<RideModePage> {
                             : Icons.directions_car_outlined,
                         size: 56,
                       ),
+
                       const SizedBox(height: 8),
                       Text(
                         _vm.active
@@ -70,10 +73,33 @@ class _RideModePageState extends State<RideModePage> {
                         icon: Icon(_vm.active ? Icons.stop : Icons.play_arrow),
                         label: Text(_vm.active ? 'Parar' : 'Iniciar trajeto'),
                       ),
+
+                      const SizedBox(height: 8),
+                      OutlinedButton.icon(
+                        onPressed: _vm.active ? _vm.simulateBump : null,
+                        icon: const Icon(Icons.warning_amber),
+                        label: const Text('Simular buraco'),
+                      ),
                     ],
                   ),
                 ),
               ),
+              if (_vm.active) ...[
+                const SizedBox(height: 12),
+                Card(
+                  color: _vm.lastAlert != null ? scheme.errorContainer : null,
+                  child: ListTile(
+                    leading: const Icon(Icons.warning_amber),
+                    title: Text(
+                      _vm.lastAlert ?? 'Nenhum buraco registrado por perto',
+                    ),
+                    subtitle: const Text(
+                      'Você recebe um alerta ao chegar a '
+                      '${RideModeViewModel.alertRadius ~/ 1} m de um buraco.',
+                    ),
+                  ),
+                ),
+              ],
               if (_vm.active && e != null) ...[
                 const SizedBox(height: 12),
                 Text(
@@ -84,6 +110,7 @@ class _RideModePageState extends State<RideModePage> {
                     fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
+
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: (_vm.deviation / _vm.threshold).clamp(0.0, 1.0),
@@ -111,15 +138,13 @@ class _RideModePageState extends State<RideModePage> {
                 label: _vm.threshold.toStringAsFixed(1),
                 onChanged: (v) => _vm.threshold = v,
               ),
-              const Text(
-                'Menor = mais sensível. Para a demo, chacoalhe o celular.',
-                style: TextStyle(fontSize: 12),
-              ),
+
               const Divider(height: 32),
               Text(
                 'Solavancos neste trajeto: ${_vm.bumps.length}',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+
               for (final b in _vm.bumps)
                 ListTile(
                   leading: const Icon(Icons.vibration),

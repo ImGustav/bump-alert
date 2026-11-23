@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Barra horizontal centrada em zero (-20 a +20 m/s²) + valor numérico.
 class AxisBar extends StatelessWidget {
   const AxisBar({
     super.key,
